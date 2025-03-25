@@ -10,5 +10,7 @@ app.use(cors({
 }))
 
 app.use(express.json({limit:"100kb"}))
-
+app.use(express.urlencoded({extended:true,limit:"100kb"}))
+app.use(express.static("public"))
+app.use(cookieParser())
 export {app}
