@@ -18,7 +18,7 @@ console.log("file uploaded",response.url);
 return response;
 
     } catch (error) {
-        fs.unlinkSync(localFilePath)
+        fs.unlinkSync(localFilePath)  //remove the locally saved temporarily file
         return null;
     }
 }
