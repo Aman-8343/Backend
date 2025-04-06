@@ -2,6 +2,7 @@ import { asynchandler } from "../utils/asynchandler.js";
 import { apiError} from "../utils/apiError.js"
 import { User } from "../models/user.models.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser= asynchandler(  async (req,res)=>{
   const {fullName,email,username,password}=  req.body
@@ -24,7 +25,7 @@ if(existedUser){
 
   const avatarLocalPath=req.files?.avatar[0]?.path;
   const coverImageLocalPath=  req.files?.coverImage[0]?.path;
-})
+
 
 if(!avatarLocalPath){
 throw new apiError(400,"Avatar is required")
@@ -39,7 +40,7 @@ if(!avatar){
 
 
 const user= await User.create({
-    fulllName,
+    fullName,
     avatar:avatar.url,
     coverImage:coverImage.url||"",
     email,
@@ -52,6 +53,12 @@ const createdUser=await User.findById(user._id).select("-password -refreshToken"
 if(!createdUser){
     throw new apiError(500,"Something went Wrong while registering the user")
 }
+
+return res.status(201).json(
+    new ApiResponse(200,createdUser,"user registered successfully")
+)
+
+})
 
 export {registerUser}
 
