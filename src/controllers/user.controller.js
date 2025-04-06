@@ -37,6 +37,16 @@ if(!avatar){
     throw new apiError(400,"Avatar is required") 
 }
 
+
+const user= await User.create({
+    fulllName,
+    avatar:avatar.url,
+    coverImage:coverImage.url||"",
+    email,
+    password,
+    username:username.toLowerCase()
+})
+
 export {registerUser}
 
 
