@@ -1,8 +1,5 @@
-import { exists } from "fs";
 import { asynchandler } from "../utils/asynchandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { Db } from "mongodb";
-import { response } from "express";
+
 
 const registerUser= asynchandler(  async (req,res)=>{
     res.status(200).json({
