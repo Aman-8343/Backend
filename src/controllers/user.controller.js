@@ -47,6 +47,12 @@ const user= await User.create({
     username:username.toLowerCase()
 })
 
+const createdUser=await User.findById(user._id).select("-password -refreshToken")
+
+if(!createdUser){
+    throw new apiError(500,"Something went Wrong while registering the user")
+}
+
 export {registerUser}
 
 
