@@ -33,6 +33,10 @@ throw new apiError(400,"Avatar is required")
 const avatar= await uploadOnCloudinary(avatarLocalPath)
 const coverImage= await uploadOnCloudinary(coverImageLocalPath)
 
+if(!avatar){
+    throw new apiError(400,"Avatar is required") 
+}
+
 export {registerUser}
 
 
