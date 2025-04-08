@@ -3,6 +3,7 @@ import { ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.models.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { checkPrime } from "crypto";
 
 const registerUser= asynchandler(  async (req,res)=>{
   const {fullName,email,username,password}=  req.body
@@ -69,9 +70,40 @@ return res.status(201).json(
 
 })
 
-export {registerUser}
+
+const loginUser=asynchandler(async(req,res)=>{
+     
+})
+
+export {registerUser,
+    loginUser
+}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+       // steps for loginUser
+// req.body=>data
+// username or email
+// find the user
+// password check
+// acess and refresh token
+// send cookie
+
+
+
+   //steps for regiister user 
 // get user detail from frontend
 // vaidation - not empty
 // check if the user is already exists 
