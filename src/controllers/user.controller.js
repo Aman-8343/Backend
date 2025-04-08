@@ -3,7 +3,20 @@ import { ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.models.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { checkPrime } from "crypto";
+
+
+const generateAccessAndRefreshTokens= async(userId)=>{
+    try {
+        const user= await User.findById(userId)
+      const accessToken=  user.generateAccessToken()
+      const refreshToken=  user.generateRefreshToken()
+      user.refreshToken=refreshToken
+   await   user.save({validateBeforeSave:false})
+          return{accessToken,refreshToken}
+    } catch (error) {
+        throw new ApiError(500,"something went wong while generating token")
+    }
+}
 
 const registerUser= asynchandler(  async (req,res)=>{
   const {fullName,email,username,password}=  req.body
@@ -91,6 +104,8 @@ const isPasswordValid=await user.isPasswordCorrect(password)
 if(!isPasswordValid){
     throw new ApiError(401,"Invaid user creadentials")
 }
+
+const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id)
 
 })
 
