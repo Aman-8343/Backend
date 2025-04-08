@@ -73,6 +73,16 @@ return res.status(201).json(
 
 const loginUser=asynchandler(async(req,res)=>{
      
+    const {username,email,password}=req.body
+
+    if (!username||!email){
+        throw new ApiError(400,"email and username is requires")
+    }
+
+const user= await User.findOne({
+    $or:[{username,email}]
+})
+
 })
 
 export {registerUser,
