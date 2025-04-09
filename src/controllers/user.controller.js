@@ -8,10 +8,14 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const generateAccessAndRefreshTokens= async(userId)=>{
     try {
         const user= await User.findById(userId)
+
+      
       const accessToken=  user.generateAccessToken()
+
+    
       const refreshToken=  user.generateRefreshToken()
       user.refreshToken=refreshToken
-   await   user.save({validateBeforeSave:false})
+   await user.save({validateBeforeSave:false})
           return{accessToken,refreshToken}
     } catch (error) {
         throw new ApiError(500,"something went wong while generating token")
@@ -87,13 +91,13 @@ return res.status(201).json(
 const loginUser=asynchandler(async(req,res)=>{
      
     const {username,email,password}=req.body
+    // console.log(email)
 
-    if ( !email || !password){
-        throw new ApiError(400,"email and username is requires")
+    if (!username && !email) {
+        throw new ApiError(400, "username or email is required")
     }
-
 const user= await User.findOne({
-    $or:[{email}]
+    $or:[{username},{email}]
 })
 if(!user){
     throw new ApiError(404,"user not existed")
@@ -107,8 +111,7 @@ if(!isPasswordValid){
 
 const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id);
 
-const loggedInUser=await User.findById(user._id)
-select("-password -refreshToken")
+const loggedInUser=await User.findById(user._id).select("-password -refreshToken")
 
 
 const options={
