@@ -88,12 +88,12 @@ const loginUser=asynchandler(async(req,res)=>{
      
     const {username,email,password}=req.body
 
-    if (!username||!email){
+    if ( !email || !password){
         throw new ApiError(400,"email and username is requires")
     }
 
 const user= await User.findOne({
-    $or:[{username,email}]
+    $or:[{email}]
 })
 if(!user){
     throw new ApiError(404,"user not existed")
@@ -105,7 +105,7 @@ if(!isPasswordValid){
     throw new ApiError(401,"Invaid user creadentials")
 }
 
-const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id)
+const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id);
 
 const loggedInUser=await User.findById(user._id)
 select("-password -refreshToken")
