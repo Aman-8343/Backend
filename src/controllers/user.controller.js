@@ -212,7 +212,7 @@ const refreshAccessToken= asynchandler(async(req,res)=>{
 const changeCurrentPassword= asynchandler(async(req,res)=>{
     const{oldPassword,newPassword}=req.body
 
-    const user= await User.findById(req.user?.id)
+    const user= await User.findById(req.user?._id)
 
 const isPasswordCorrect=  await  user.isPasswordCorrect(oldPassword)
 
@@ -228,13 +228,18 @@ return res
 .json(new ApiResponse(200,{},"Password changed sucessfully"))
 })
 
-
+const getCurrentUser= asynchandler(async(req,res)=>{
+return res.status(200)
+.json(200,req.user,"current user fetched succesfully")
+})
 
 export {registerUser,
     loginUser,
     logoutUser,
     refreshAccessToken,
-    changeCurrentPassword
+    changeCurrentPassword,
+    getCurrentUser,
+    
 }
 
 
