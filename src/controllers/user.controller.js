@@ -230,7 +230,7 @@ return res
 
 const getCurrentUser= asynchandler(async(req,res)=>{
 return res.status(200)
-.json(200,req.user,"current user fetched succesfully")
+.json(new ApiResponse(200,req.user,"current user fetched succesfully"))
 })
 
 const updateAccountDetails= asynchandler(async(req,res)=>{
@@ -240,7 +240,7 @@ if (!fullName || !email) {
     throw new ApiError(400,"fiels are required")
 }
 
-const user= User.findByIdAndUpdate(
+const user= await User.findByIdAndUpdate(
     req.user?._id,
     {
         $set:{
